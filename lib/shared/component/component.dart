@@ -6,7 +6,7 @@ import '../network/styles/colors.dart';
 import '../size_config.dart';
 import 'constants.dart';
 Widget myDivider() => Padding(
-  padding: const EdgeInsets.all(20.0),
+  padding: const EdgeInsets.all(10.0),
   child:   Container(
 
     width: double.infinity,

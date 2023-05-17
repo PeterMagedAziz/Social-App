@@ -7,6 +7,7 @@ import '../size_config.dart';
 import 'component.dart';
 GetIt di = GetIt.I..allowReassignment = true;
 dynamic token = '';
+dynamic uId = '';
 const TextStyle textStyle =
     TextStyle(fontSize: 17, fontWeight: FontWeight.w500);
 const kPrimaryColor = Colors.deepOrange;
