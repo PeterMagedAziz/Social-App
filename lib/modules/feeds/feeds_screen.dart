@@ -255,23 +255,75 @@ class FeedsScreen extends StatelessWidget {
                   Row(
                     children:
                     [
-                      Row(
-                        children: const [
-                          CircleAvatar(
-                            radius: 18.0,
-                            backgroundImage: NetworkImage(
-                                'https://img.freepik.com/free-photo/successful-dark-skinned-female-student-happy-get-scholarship-clenches-fists-accomplishes-goal_273609-25984.jpg?t=st=1684320863~exp=1684321463~hmac=1b15397c9a8deb15ce70a96e4e61787f2eb6e0589ec1a34ed84694dd36ea5078'),
+                      Expanded(
+                        child: Row(
+                          children: const [
+                            CircleAvatar(
+                              radius: 18.0,
+                              backgroundImage: NetworkImage(
+                                  'https://img.freepik.com/free-photo/successful-dark-skinned-female-student-happy-get-scholarship-clenches-fists-accomplishes-goal_273609-25984.jpg?t=st=1684320863~exp=1684321463~hmac=1b15397c9a8deb15ce70a96e4e61787f2eb6e0589ec1a34ed84694dd36ea5078'),
+                            ),
+                            SizedBox(
+                              width: 20.0,
+                            ),
+                            Text('write a comment ....',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey
+                            ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 10,right: 10),
+                          child: Row(
+                            children:  [
+                              const Icon(IconlyBroken.heart,
+                                size: 20,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(
+                                width: 3,
+                              ),
+                              Text('Like',
+                                style: TextStyle(
+                                    color: Colors.red[700]
+                                ),
+                              )
+
+                            ],
                           ),
-                          SizedBox(
-                            width: 20.0,
+                        ),
+                        onTap: (){},
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 10,right: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children:  [
+                              const Icon(IconlyBroken.moreSquare,
+                                size: 20,
+                                color: Colors.blue,
+                              ),
+                              const SizedBox(
+                                width: 3,
+                              ),
+                              Text('Share',
+                                style: TextStyle(
+                                    color: Colors.blue
+                                ),
+                              )
+
+                            ],
                           ),
-                          Text('write a comment ....',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey
-                          ),
-                          ),
-                        ],
+                        ),
+                        onTap: (){},
                       ),
                     ],
                   ),
