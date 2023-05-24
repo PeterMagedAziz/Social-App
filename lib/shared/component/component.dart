@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -38,17 +39,17 @@ Widget defaultTextFormField({
       controller: controller,
       textInputAction: action,
       style: const TextStyle(
-        color: Colors.white
+        color: Colors.black
       ),
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: const TextStyle(
-          color: Colors.white
+          color: Colors.blue
         ),
         hintText: hintText,
         prefixIcon: Icon(
           prefixIcon,
-          color: Colors.white,
+          color: Colors.blue,
         ),
         suffixIcon: Padding(
           padding: const EdgeInsetsDirectional.only(end: 10.0),
@@ -67,17 +68,17 @@ Widget defaultTextFormField({
 
 
 Widget defaultButton({
-  Color color = kPrimaryColor,
+  Color color = Colors.blue,
   double width = double.infinity,
   required Function function,
-  double height = 55,
+  double height = 40,
   required String text,
 }) =>
     Container(
       width: width,
       height: height,
       decoration:
-          BoxDecoration(color: color, borderRadius: BorderRadius.circular(20)),
+          BoxDecoration(color: color, borderRadius: BorderRadius.circular(10)),
       child: TextButton(
         onPressed: () => function(),
         child: Text(
@@ -96,60 +97,11 @@ OutlineInputBorder outlineInputBorder = OutlineInputBorder(
   gapPadding: 10,
 );
 
-
-
-// Widget defaultTextFormField({
-//   bool showPassword = false,
-//   required TextInputType type,
-//   required TextEditingController controller,
-//   onFieldSubmitted,
-//   onChanged,
-//   onTap,
-//   Function? validator,
-//   IconData? prefix,
-//   IconData? suffix,
-//   suffixPress,
-//   String? hint,
-// }) =>
-//     Container(
-//       padding: const EdgeInsets.symmetric(horizontal: 15),
-//       height: 60,
-//       child: TextFormField(
-//         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-//         obscureText: showPassword,
-//         keyboardType: type,
-//         controller: controller,
-//         onTap: onTap,
-//         onFieldSubmitted: onFieldSubmitted,
-//         onChanged: onChanged,
-//         validator: (value) => validator!(value),
-//         decoration: InputDecoration(
-//           border: const UnderlineInputBorder(),
-//           errorStyle: const TextStyle(
-//             fontSize: 12,
-//             fontStyle: FontStyle.normal,
-//             height: 2,
-//           ),
-//           hintText: hint,
-//           hintStyle:
-//               const TextStyle(height: 2.5, fontSize: 15, color: Colors.grey),
-//           prefixIcon: Icon(
-//             prefix,
-//           ),
-//           prefixIconConstraints:
-//               const BoxConstraints(maxHeight: 15, minWidth: 50),
-//           suffix: IconButton(
-//             onPressed: suffixPress,
-//             icon: Icon(
-//               suffix,
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
 Widget defaultTextButton({VoidCallback? function, String? text}) => TextButton(
   onPressed: function,
-  child: Text("$text".toUpperCase()),
+  child: Text("$text".toUpperCase(),style: const TextStyle(
+    color: Colors.white
+  ),),
 );
 void navigateReplacementTo(context, widget) => Navigator.pushReplacement(
     context, MaterialPageRoute(builder: (context) => widget));
@@ -481,4 +433,6 @@ SizedBox appBarLeading(BuildContext context, {num height = 18}) {
           height: height.toDouble(), color: kSecondaryColor),
     ),
   );
+
+
 }

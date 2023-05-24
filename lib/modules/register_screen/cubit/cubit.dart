@@ -32,7 +32,8 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
           name: name,
           phone: phone,
           email: email,
-          uId: value.user!.uid);
+          uId: value.user!.uid,
+      );
       emit(SocialRegisterSuccessState());
     }).catchError((error){
       emit(SocialRegisterErrorState());
@@ -54,6 +55,9 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
         email: email,
         phone: phone,
         uId: uId,
+        bio: 'Write Your Bio ....',
+        cover: 'https://img.freepik.com/free-photo/portrait-cheerful-pleasant-bearded-guy-showing-direction-with-his-forefinger-having-sincere-smile_176532-10248.jpg?t=st=1684415775~exp=1684416375~hmac=65557ff7db94541c34eb758db127e729d3f10564d48b566adfbf047af35f9cd5',
+        image: 'https://img.freepik.com/free-photo/indoor-picture-cheerful-handsome-young-man-having-folded-hands-looking-directly-smiling-sincerely-wearing-casual-clothes_176532-10257.jpg?w=996&t=st=1684415744~exp=1684416344~hmac=3d314a653679854d6398f7962b78624bc1195fc21dbb3b619e488efe01ffdc6e',
         isEmailVerified: false,
     );
     FirebaseFirestore.instance.collection('users')

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share/modules/new_post/new_post_screen.dart';
+import 'package:share/shared/component/component.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -51,6 +53,11 @@ class SocialLayout extends StatelessWidget {
                     selectedColor: Colors.pink,
                   ),
                   SalomonBottomBarItem(
+                    icon: const Icon(IconlyBroken.paperUpload),
+                    title: const Text("Post"),
+                    selectedColor: Colors.blue,
+                  ),
+                  SalomonBottomBarItem(
                     icon: const Icon(IconlyBroken.user2),
                     title: const Text("User"),
                     selectedColor: Colors.orange,
@@ -65,6 +72,10 @@ class SocialLayout extends StatelessWidget {
             ),
           );
         },
-        listener: (context, states) {});
+        listener: (context, state) {
+          if(state is SocialNewPostState){
+            navigateTo (context,const NewPostScreen());
+          }
+        });
   }
 }
