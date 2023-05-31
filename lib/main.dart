@@ -22,6 +22,7 @@ void main() async {
       await FirebaseAppCheck.instance.activate(
         webRecaptchaSiteKey: 'recaptcha-v3-site-key',
 
+
         androidProvider: AndroidProvider.debug,
       );
       Bloc.observer = MyBlocObserver();
@@ -53,7 +54,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider (create: (BuildContext context) => SocialCubit()..getUserData())
+          BlocProvider (create: (BuildContext context) =>
+          SocialCubit()..getUserData()..getPosts())
         ],
         child: BlocConsumer<SocialCubit,SocialStates>(
             builder: (context,states) {

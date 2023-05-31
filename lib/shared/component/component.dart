@@ -78,15 +78,14 @@ Widget defaultButton({
       width: width,
       height: height,
       decoration:
-          BoxDecoration(color: color, borderRadius: BorderRadius.circular(10)),
+          BoxDecoration(color: color, borderRadius: BorderRadius.circular(5)),
       child: TextButton(
         onPressed: () => function(),
         child: Text(
-          text,
+          text.toUpperCase(),
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontSize: 17,
           ),
         ),
       ),
@@ -97,7 +96,8 @@ OutlineInputBorder outlineInputBorder = OutlineInputBorder(
   gapPadding: 10,
 );
 
-Widget defaultTextButton({VoidCallback? function, String? text}) => TextButton(
+Widget defaultTextButton({ required VoidCallback? function, required
+String? text}) => TextButton(
   onPressed: function,
   child: Text("$text".toUpperCase(),style: const TextStyle(
     color: Colors.white

@@ -7,6 +7,7 @@ import 'cubit/states.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
+
 class SocialLayout extends StatelessWidget {
   const SocialLayout({Key? key}) : super(key: key);
 
@@ -53,7 +54,7 @@ class SocialLayout extends StatelessWidget {
                     selectedColor: Colors.pink,
                   ),
                   SalomonBottomBarItem(
-                    icon: const Icon(IconlyBroken.paperUpload),
+                    icon: const Icon(IconlyBroken.upload),
                     title: const Text("Post"),
                     selectedColor: Colors.blue,
                   ),
