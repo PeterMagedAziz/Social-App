@@ -126,3 +126,11 @@ class SocialPostImagePickedErrorState extends SocialStates{}
 class SocialPostImagePickedSuccessState extends SocialStates{}
 
 class SocialRemovePostImagePickedState extends SocialStates{}
+
+class SocialSendMessageSuccessState extends SocialStates{}
+
+class SocialSendMessageErrorState extends SocialStates{}
+
+class SocialGetMessageSuccessState extends SocialStates{}
+
+class SocialGetMessageErrorState extends SocialStates{}

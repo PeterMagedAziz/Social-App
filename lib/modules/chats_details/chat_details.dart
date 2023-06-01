@@ -66,7 +66,7 @@ class ChatDetailsScreen extends StatelessWidget {
                 child: const Text('Hello There'),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
