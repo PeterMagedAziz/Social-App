@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:share/layout/cubit/states.dart';
+import 'package:share/models/message_model.dart';
 import 'package:share/models/post_model.dart';
 import 'package:share/models/user_model.dart';
 import 'package:share/modules/chats/chats_screen.dart';
@@ -319,17 +320,55 @@ class SocialCubit extends Cubit<SocialStates> {
   void getUsers() {
     if (users.isEmpty) {
       FirebaseFirestore.instance.collection('users').get().then((value) {
-      value.docs.forEach((element) {
-        if (element.data()['uId'] != userModel!.uId) {
-          users.add(SocialUserModel.fromJson(element.data()));
-        }
+        value.docs.forEach((element) {
+          if (element.data()['uId'] != userModel!.uId) {
+            users.add(SocialUserModel.fromJson(element.data()));
+          }
+        });
+        emit(SocialGetAllUsersSuccessState());
+      }).catchError((error) {
+        emit(SocialGetAllUsersErrorState(error));
       });
-      emit(SocialGetAllUsersSuccessState());
-    }).catchError((error) {
-      emit(SocialGetAllUsersErrorState(error));
-    });
     }
   }
 
+  void sendMessage({
+    required String? receiverId,
+    required String? dateTime,
+    required String? text,
+  }) {
+    MessageModel model = MessageModel(
+      text: text,
+      senderId: userModel!.uId,
+      receiverId: receiverId,
+      dateTime: dateTime,
+    );
+    FirebaseFirestore.instance
+    .collection('users')
+    .doc(userModel!.uId)
+    .collection('chats')
+    .doc(receiverId)
+    .collection('messages')
+    .add(model.toMap())
+    .then((value) {
+      emit(SocialSendMessageSuccessState());
+    })
+    .catchError((error){
+      emit(SocialSendMessageErrorState());
+    });
 
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(userModel!.uId)
+        .collection('messages')
+        .add(model.toMap())
+        .then((value) {
+      emit(SocialSendMessageSuccessState());
+    })
+        .catchError((error){
+      emit(SocialSendMessageErrorState());
+    });
+  }
 }
