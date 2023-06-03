@@ -5,7 +5,6 @@ import 'package:share/layout/cubit/cubit.dart';
 import 'package:share/layout/cubit/states.dart';
 import 'package:share/models/message_model.dart';
 import 'package:share/models/user_model/social_user_model.dart';
-import 'package:share/shared/component/component.dart';
 import 'package:share/shared/network/styles/colors.dart';
 
 import '../../shared/style/iconly/iconly_broken.dart';
@@ -50,17 +49,18 @@ class ChatDetailsScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Expanded(
-                        child: ListView.separated
-                          (
+                        child: ListView.separated(
                           physics: const BouncingScrollPhysics(),
                             itemBuilder: (context,index)
                         {
                           var message = SocialCubit.get(context).messages[index];
-                          if(SocialCubit.get(context).userModel!.uId == message.senderId) {
-                            return buildMyMessage(message);
-                          }else{
+                          if(SocialCubit.get(context).userModel!.uId == message.receiverId) {
                             return buildMessage(message);
                           }
+                          if(SocialCubit.get(context).userModel!.uId == message.senderId) {
+                            return buildMyMessage(message);
+                          }
+                          return null;
 
                         } ,
                             separatorBuilder: (context,index) => const SizedBox(
@@ -69,6 +69,7 @@ class ChatDetailsScreen extends StatelessWidget {
                             itemCount: SocialCubit.get(context).messages.length
                         ),
                       ),
+                      const SizedBox(height: 10,),
                       Container(
                         decoration: BoxDecoration(
                             border: Border.all(
@@ -112,7 +113,7 @@ class ChatDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                fallback: (context) => const CircularProgressIndicator(),
+                fallback: (context) => const Center(child: CircularProgressIndicator()),
               ),
             );
           },
@@ -121,39 +122,47 @@ class ChatDetailsScreen extends StatelessWidget {
     );
   }
   Widget buildMessage(MessageModel model) => Align(
-    alignment: AlignmentDirectional.centerStart,
-    child: Container(
-      decoration:  BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: const BorderRadiusDirectional.only(
-            bottomEnd: Radius.circular(10.0),
-            topStart: Radius.circular(10.0),
-            topEnd: Radius.circular(10.0),
-          )
-      ),
-      padding: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 15.0
-      ),
-      child: Text('${model.text}'),
+    alignment: Alignment.centerLeft,
+    child: Column(
+      children: [
+        Container(
+          decoration:  BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: const BorderRadiusDirectional.only(
+                bottomEnd: Radius.circular(10.0),
+                topStart: Radius.circular(10.0),
+                topEnd: Radius.circular(10.0),
+              )
+          ),
+          padding: const EdgeInsets.symmetric(
+              vertical: 10.0,
+              horizontal: 15.0
+          ),
+          child: Text('${model.text}'),
+        ),
+      ],
     ),
   );
   Widget buildMyMessage(MessageModel model) =>  Align(
-    alignment: AlignmentDirectional.centerEnd,
-    child: Container(
-      decoration:  BoxDecoration(
-          color: defaultColor.withOpacity(0.2),
-          borderRadius: const BorderRadiusDirectional.only(
-            bottomStart: Radius.circular(10.0),
-            topStart: Radius.circular(10.0),
-            topEnd: Radius.circular(10.0),
-          )
-      ),
-      padding: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 15.0
-      ),
-      child:  Text('${model.text}'),
+    alignment: Alignment.centerRight,
+    child: Column(
+      children: [
+        Container(
+          decoration:  BoxDecoration(
+              color: defaultColor.withOpacity(0.2),
+              borderRadius: const BorderRadiusDirectional.only(
+                bottomStart: Radius.circular(10.0),
+                topStart: Radius.circular(10.0),
+                topEnd: Radius.circular(10.0),
+              )
+          ),
+          padding: const EdgeInsets.symmetric(
+              vertical: 10.0,
+              horizontal: 15.0
+          ),
+          child:  Text('${model.text}'),
+        ),
+      ],
     ),
   );
 }

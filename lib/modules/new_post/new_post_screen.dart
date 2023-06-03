@@ -6,10 +6,11 @@ import 'package:share/layout/cubit/states.dart';
 import 'package:share/shared/component/component.dart';
 
 class NewPostScreen extends StatelessWidget {
-  const NewPostScreen({Key? key}) : super(key: key);
+
+  const NewPostScreen({Key? key,}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context ,) {
     var textController = TextEditingController();
 
     return BlocConsumer<SocialCubit, SocialStates>(
@@ -50,15 +51,15 @@ class NewPostScreen extends StatelessWidget {
             child: Column(
               children: [
                 if(states is SocialCreatePostLoadingState)
-                  const LinearProgressIndicator(),
+                const LinearProgressIndicator(),
                 if(states is SocialCreatePostLoadingState)
-                  const SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                 Row(
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 25.0,
                       backgroundImage: NetworkImage(
-                          'https://img.freepik.com/free-photo/successful-dark-skinned-female-student-happy-get-scholarship-clenches-fists-accomplishes-goal_273609-25984.jpg?t=st=1684320863~exp=1684321463~hmac=1b15397c9a8deb15ce70a96e4e61787f2eb6e0589ec1a34ed84694dd36ea5078'),
+                          '${SocialCubit.get(context).userModel!.image}'),
                     ),
                     const SizedBox(
                       width: 20.0,
@@ -68,17 +69,17 @@ class NewPostScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            children: const [
+                            children:  [
                               Text(
-                                'Peter Maged',
-                                style: TextStyle(
+                                '${SocialCubit.get(context).userModel!.name}',
+                                style: const TextStyle(
                                   fontSize: 16,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.check_circle,
                                 color: Colors.blueAccent,
                                 size: 15,
@@ -131,7 +132,7 @@ class NewPostScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                 Row(
                   children: [
                     Expanded(
@@ -145,9 +146,9 @@ class NewPostScreen extends StatelessWidget {
                           children: const [
                             Icon(IconlyBroken.image),
                             SizedBox(
-                        width:
-                        5.0,
-                      ),
+                              width:
+                              5.0,
+                            ),
                             Text('add Photo')
                           ],
                         ),
@@ -157,7 +158,7 @@ class NewPostScreen extends StatelessWidget {
                       child: TextButton(
                         onPressed: () {},
                         child: const Text('#Tags',style: TextStyle(
-                          fontSize: 15.0
+                            fontSize: 15.0
                         ),),
                       ),
                     ),

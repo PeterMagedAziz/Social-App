@@ -4,14 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:share/layout/cubit/states.dart';
 import 'package:share/models/post_model.dart';
+import 'package:share/modules/comment/comment_screen.dart';
 import 'package:share/shared/component/component.dart';
 import '../../layout/cubit/cubit.dart';
 
 class FeedsScreen extends StatelessWidget {
   const FeedsScreen({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
+
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -69,6 +73,7 @@ class FeedsScreen extends StatelessWidget {
     );
   }
 
+
   Widget buildPostItem(PostModel model, context, index) => Card(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     elevation: 5.0,
@@ -80,10 +85,9 @@ class FeedsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
+                const CircleAvatar(
                 radius: 25.0,
-                backgroundImage: NetworkImage(
-                    'https://img.freepik.com/free-photo/cheerful-curly-blond-woman-glittery-disco-top-looks-amazement-camera-lilac-space_197531-15568.jpg?w=996&t=st=1685441305~exp=1685441905~hmac=4aed6efddfae6af8048748ad975248001ff2353a1c43cce0eb54bb4237e8bf65'),
+                backgroundImage: NetworkImage('https://img.freepik.com/free-photo/pretty-lady-polka-dot-outfit-smiling-pink-wall_197531-23625.jpg?w=740&t=st=1685704307~exp=1685704907~hmac=e2a8d9fa2a65f178d748e82165db3ead1e2b66004760de0672c95251535589a3'),
               ),
               const SizedBox(
                 width: 20.0,
@@ -301,14 +305,14 @@ class FeedsScreen extends StatelessWidget {
                     const SizedBox(
                       width: 20.0,
                     ),
-                    InkWell(
-                      child: const Text(
-                        'write a comment ....',
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                    if (SocialCubit.get(context).comments.length > index)
+                      InkWell(
+                      child:  Text(
+                        "${SocialCubit.get(context).comments[index]} Comment",
+                        style: Theme.of(context).textTheme.caption,
                       ),
                       onTap: () {
-                        SocialCubit.get(context)
-                            .commentsPost(SocialCubit.get(context).postId[index]);
+                        // navigateTo(context, CommentScreen(SocialCubit.get(context).postId[index]));
                       },
                     ),
                   ],

@@ -1,24 +1,27 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:share/layout/cubit/states.dart';
 import 'package:share/models/message_model.dart';
 import 'package:share/models/post_model.dart';
-import 'package:share/models/user_model.dart';
 import 'package:share/modules/chats/chats_screen.dart';
 import 'package:share/modules/feeds/feeds_screen.dart';
 import 'package:share/modules/new_post/new_post_screen.dart';
 import 'package:share/modules/settings/settings_screen.dart';
 import 'package:share/modules/users/user_screen.dart';
 import 'package:share/shared/component/constants.dart';
+import 'package:share/shared/network/local/cache_helper.dart';
 import '../../models/comment_model.dart';
 import '../../models/user_model/social_user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class SocialCubit extends Cubit<SocialStates> {
   SocialCubit() : super(SocialInitialState());
+
+  String? uIdIndex;
 
   static SocialCubit get(context) => BlocProvider.of(context);
 
@@ -66,6 +69,21 @@ class SocialCubit extends Cubit<SocialStates> {
       currentIndex = index;
       emit(SocialChangeBottomNavState());
     }
+  }
+
+  bool isDarkModeEnabled=false;
+  ThemeMode appMode = ThemeMode.dark;
+
+
+  void changeAppMode ({bool? fromShared})
+  {
+
+    fromShared !=null ? isDarkModeEnabled =fromShared : isDarkModeEnabled = !isDarkModeEnabled;
+    CacheHelper.saveData(key: 'isDark', value: isDarkModeEnabled).then((value) {
+      print(value);
+      emit(ChangeModeSocialAppStates());
+    });
+
   }
 
   File? profileImage;
@@ -315,6 +333,96 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
+  XFile? commentImage;
+  File? commentImageFile;
+  Future<void> getCommentImage() async {
+    commentImage = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (commentImage != null) {
+      commentImageFile = File(commentImage!.path);
+      emit(SocialCommentImagePickedSuccessState());
+    } else {
+      print("please selected image");
+      emit(SocialCommentImagePickedErrorState());
+    }
+  }
+
+  void uploadCommentImage({
+    required String uidComment,
+    required String textComment,
+    String? postId,
+  }) {
+    emit(SocialCreatePostLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child("comments/${Uri.file(commentImage!.path).pathSegments.last}")
+        .putFile(commentImageFile!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        createComment(
+          uidComment: uidComment,
+          textComment: textComment,
+          imageComment: value,
+          postId: postId!,
+        );
+      }).catchError((error) {
+        emit(SocialUploadCommentImageErrorStates());
+      });
+    }).catchError((error) {
+      emit(SocialUploadCommentImageErrorStates());
+    });
+  }
+
+  void createComment({
+    required String uidComment,
+    required String textComment,
+    String? imageComment,
+    String? postId,
+  }) {
+    emit(SocialCreateCommentLoadingStates());
+    CommentModel commentModel = CommentModel(
+      name: userModel!.name,
+      textComment: textComment,
+      image: userModel!.image,
+      uId: userModel!.uId,
+      imageComment: imageComment,
+      postId: postId,
+    );
+    FirebaseFirestore.instance
+        .collection("posts")
+        .doc(uidComment)
+        .collection("comments")
+        .doc(userModel!.uId)
+        .set(commentModel.toMap())
+        .then((value) {
+      emit(SocialCreateCommentSuccessStates());
+    }).catchError((error) {
+      emit(SocialCreateCommentErrorStates());
+    });
+  }
+
+  List<CommentModel> commentsModel = [];
+  List<String> postsIdComment = [];
+
+
+  void getComments() {
+    emit(SocialGetCommentsLoadingState());
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      value.docs.forEach((element) {
+        element.reference.collection('comments').get().then((value) {
+          comments.add(value.docs.length);
+          postsIdComment.add(element.id);
+          commentsModel.add(CommentModel.fromJson(element.data()));
+        }).catchError((error) {});
+      });
+      emit(SocialGetCommentsSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SocialGetCommentsErrorState(error.toString()));
+    });
+  }
+
   List<SocialUserModel> users = [];
 
   void getUsers() {
@@ -381,15 +489,14 @@ class SocialCubit extends Cubit<SocialStates> {
         .collection('chats')
         .doc(receiverId)
         .collection('messages')
-    .orderBy('dateTime')
+        .orderBy('dateTime')
         .snapshots()
         .listen((event) {
           messages = [];
-          event.docs.forEach((element)
-          {
+          for (var element in event.docs) {
             messages.add(MessageModel.fromJson(element.data()));
 
-          });
+          }
           emit(SocialGetMessageSuccessState());
     });
   }

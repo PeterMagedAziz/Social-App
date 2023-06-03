@@ -113,6 +113,8 @@ class SocialUpdateUserLoadingState extends SocialStates{}
 
 class SocialUpdateUserErrorState extends SocialStates{}
 
+class ChangeModeSocialAppStates extends SocialStates{}
+
 //Create Post
 
 class SocialCreatePostLoadingState extends SocialStates{}
@@ -132,4 +134,5 @@ class SocialSendMessageSuccessState extends SocialStates{}
 class SocialSendMessageErrorState extends SocialStates{}
 
 class SocialGetMessageSuccessState extends SocialStates{}
+
 

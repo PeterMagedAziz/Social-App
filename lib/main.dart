@@ -1,4 +1,5 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +8,18 @@ import 'package:share/layout/cubit/states.dart';
 import 'package:share/layout/social_layout.dart';
 import 'package:share/modules/login/social_login_screen.dart';
 import 'package:share/shared/bloc_observer.dart';
+import 'package:share/shared/component/component.dart';
 import 'package:share/shared/component/constants.dart';
 import 'package:share/shared/network/local/cache_helper.dart';
 import 'firebase_options.dart';
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async
+{
+  print('on Message Opened App');
+  print(message.data.toString());
+  showToast(text: 'on Message Opened App', state: ToastStates.SUCCESS);
+
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +35,23 @@ void main() async {
 
         androidProvider: AndroidProvider.debug,
       );
+      var token = await FirebaseMessaging.instance.getToken();
+
+      print(token);
+
+      FirebaseMessaging.onMessage.listen((event) {
+        print(event.data.toString());
+        showToast(text: 'on Message', state: ToastStates.SUCCESS);
+      });
+
+      FirebaseMessaging.onMessageOpenedApp.listen((event) {
+        print(event.data.toString());
+        showToast(text: 'on Message Opened App', state: ToastStates.SUCCESS);
+
+      });
+
+      FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
       Bloc.observer = MyBlocObserver();
       uId = CacheHelper.getData(key: 'uId');
       Widget widget;
