@@ -7,6 +7,7 @@ import 'package:share/layout/cubit/cubit.dart';
 import 'package:share/layout/cubit/states.dart';
 import 'package:share/layout/social_layout.dart';
 import 'package:share/modules/login/social_login_screen.dart';
+import 'package:share/modules/native_code.dart';
 import 'package:share/shared/bloc_observer.dart';
 import 'package:share/shared/component/component.dart';
 import 'package:share/shared/component/constants.dart';
@@ -86,9 +87,9 @@ class MyApp extends StatelessWidget {
         ],
         child: BlocConsumer<SocialCubit,SocialStates>(
             builder: (context,states) {
-              return MaterialApp(
+              return  MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: startWidget
+                  home: NativeCodeScreen()
               );
             },
             listener: (context,states) {})
